@@ -67,8 +67,14 @@ func parseString(input string) (num1 int, num2 int, err error) {
 
 func StringSum(input string) (output string, err error) {
 
+	myError := fmt.Errorf("wrong symbol")
+
+	numErr := strconv.NumError{
+		Err: myError,
+	}
+
 	if ok := checkSymbols(input); !ok {
-		err = fmt.Errorf("bad input. %w", strconv.ErrSyntax)
+		err = fmt.Errorf("bad input. %w", &numErr)
 		return 
 	}
 
