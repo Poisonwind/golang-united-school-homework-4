@@ -2,6 +2,10 @@ package string_sum
 
 import (
 	"errors"
+	"fmt"
+	"regexp"
+	"strconv"
+	"strings"
 )
 
 //use these errors as appropriate, wrapping them with fmt.Errorf function
@@ -22,6 +26,67 @@ var (
 //
 // Use the errors defined above as described, again wrapping into fmt.Errorf
 
+func checkSymbols (input string) bool {
+
+	allowed := "1234567890+- "
+
+	for _, val := range(input) {
+
+		if ok := strings.Contains(allowed, string(val)); !ok {
+			return false
+		}
+
+	}
+
+	return true
+}
+
+func parseString(input string) (num1 int, num2 int, err error) {
+
+	re := regexp.MustCompile(`.?\d+`)
+	res := re.FindAllString(input, -1)
+
+	if len(res) != 2 {
+		err = fmt.Errorf("bad input %w", errorNotTwoOperands)
+		return		
+	}
+
+	num1, err1 := strconv.Atoi(res[0])
+	if err1 != nil {
+		return 0, 0, err1
+	}
+
+	num2, err2 := strconv.Atoi(res[1])
+	if err2 != nil {
+		return 0, 0, err2
+	}
+
+	return
+	
+}
+
 func StringSum(input string) (output string, err error) {
-	return "", nil
+
+	if ok := checkSymbols(input); !ok {
+		err = fmt.Errorf("bad input. %w", strconv.ErrSyntax)
+		return 
+	}
+
+	clearInput := strings.ReplaceAll(input, " ", "")
+
+	if clearInput == ""{
+		err = fmt.Errorf("bad input. %w",  errorEmptyInput)
+		return
+	}
+
+	num1, num2, err := parseString(clearInput)
+	if err != nil {
+		return
+	}
+
+	result := num1 + num2
+
+	output = strconv.Itoa(result)
+
+	return
 }
