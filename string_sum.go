@@ -53,12 +53,12 @@ func parseString(input string) (num1 int, num2 int, err error) {
 
 	num1, err1 := strconv.Atoi(res[0])
 	if err1 != nil {
-		return 0, 0, err1
+		return 0, 0, fmt.Errorf("something wrong, %w", err1)
 	}
 
 	num2, err2 := strconv.Atoi(res[1])
 	if err2 != nil {
-		return 0, 0, err2
+		return 0, 0, fmt.Errorf("something wrong, %w", err1)
 	}
 
 	return
